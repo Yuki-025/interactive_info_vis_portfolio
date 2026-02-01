@@ -1,8 +1,9 @@
-// HWK 4C — Candle with Subtle Flame
+// HWK 4C — Candle Clock (Accumulated Time)
 registerSketch('sk4', function (p) {
 
   let startTime;
   let burnDuration = 300;
+  let burnedCount = 0;
 
   let maxCandleHeight = 200;
   let candleWidth = 30;
@@ -26,8 +27,14 @@ registerSketch('sk4', function (p) {
 
     // time logic
     let elapsed = (p.millis() - startTime) / 1000;
-    let progress = p.constrain(elapsed / burnDuration, 0, 1);
 
+    if (elapsed >= burnDuration) {
+      burnedCount++;
+      startTime = p.millis();
+      elapsed = 0;
+    }
+
+    let progress = p.constrain(elapsed / burnDuration, 0, 1);
     let candleHeight = p.lerp(maxCandleHeight, 0, progress);
     let candleTopY = tableY - candleHeight;
 
@@ -44,11 +51,21 @@ registerSketch('sk4', function (p) {
         6
       );
 
-      // flame
       let flicker = p.sin(p.frameCount * 0.2) * 3;
       p.fill(255, 160, 60);
       p.ellipse(candleX, candleTopY - 10 + flicker, 14, 20);
     }
+
+    // burned counter
+    p.noStroke();
+    p.fill(150);
+    p.textSize(14);
+    p.textAlign(p.RIGHT, p.CENTER);
+    p.text(
+      "Candles burned: " + burnedCount,
+      p.width - 20,
+      p.height - 30
+    );
   };
 
   p.windowResized = function () {
@@ -56,6 +73,7 @@ registerSketch('sk4', function (p) {
   };
 
 });
+
 
 
 
