@@ -1,5 +1,8 @@
-// HWK 4C — Static Candle Structure
+// HWK 4C — Candle Burn (Irreversible Time)
 registerSketch('sk4', function (p) {
+
+  let startTime;
+  let burnDuration = 300; // 5 minutes
 
   let maxCandleHeight = 200;
   let candleWidth = 30;
@@ -7,6 +10,7 @@ registerSketch('sk4', function (p) {
   p.setup = function () {
     p.createCanvas(p.windowWidth, p.windowHeight);
     p.textAlign(p.CENTER, p.CENTER);
+    startTime = p.millis();
   };
 
   p.draw = function () {
@@ -20,17 +24,25 @@ registerSketch('sk4', function (p) {
     p.strokeWeight(3);
     p.line(0, tableY, p.width, tableY);
 
-    // candle body (static)
-    p.noStroke();
-    p.fill(240, 230, 200);
-    p.rectMode(p.CENTER);
-    p.rect(
-      candleX,
-      tableY - maxCandleHeight / 2,
-      candleWidth,
-      maxCandleHeight,
-      6
-    );
+    // time logic
+    let elapsed = (p.millis() - startTime) / 1000;
+    let progress = p.constrain(elapsed / burnDuration, 0, 1);
+
+    let candleHeight = p.lerp(maxCandleHeight, 0, progress);
+
+    // candle body
+    if (candleHeight > 0) {
+      p.noStroke();
+      p.fill(240, 230, 200);
+      p.rectMode(p.CENTER);
+      p.rect(
+        candleX,
+        tableY - candleHeight / 2,
+        candleWidth,
+        candleHeight,
+        6
+      );
+    }
   };
 
   p.windowResized = function () {
@@ -38,4 +50,5 @@ registerSketch('sk4', function (p) {
   };
 
 });
+
 
