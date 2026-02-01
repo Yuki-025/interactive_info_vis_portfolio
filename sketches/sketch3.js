@@ -66,7 +66,7 @@ registerSketch('sk3', function (p) {
     p.noStroke();
     p.fill(120);
     p.textAlign(p.CENTER, p.CENTER);
-    p.textSize(12);
+    p.textSize(24);
     p.text(
       p.nf(p.hour(), 2) + ":" +
       p.nf(p.minute(), 2) + ":" +
