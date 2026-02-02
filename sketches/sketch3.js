@@ -1,8 +1,8 @@
-// HWK 4B — Continuous Shadow Clock (final)
+// HWK 4B — Continuous Shadow Clock (12-hour circular motion)
 registerSketch('sk3', function (p) {
 
   let poleX, poleY;
-  let poleHeight = 320;
+  let poleHeight = 280;
 
   p.setup = function () {
     p.createCanvas(p.windowWidth, p.windowHeight);
@@ -13,37 +13,28 @@ registerSketch('sk3', function (p) {
   p.draw = function () {
     p.background(245);
 
-    // continuous time (seconds)
+    // continuous time in seconds
     let totalSeconds =
       p.hour() * 3600 +
       p.minute() * 60 +
       p.second() +
       p.millis() / 1000;
 
-    let fakeHour = p.map(
-      totalSeconds,
-      0,
-      24 * 3600,
-      0,
-      24
-    );
+    // continuous hour value
+    let fakeHour = totalSeconds / 3600;
 
-    // shadow angle across the day
-    let angle = p.map(
-      fakeHour,
-      0,
-      24,
-      -p.PI / 2,
-      p.PI / 2
-    );
+    // 12-hour circular rotation (360° per 12 hours)
+    let angle =
+      p.TWO_PI * (fakeHour % 12) / 12
+      - p.HALF_PI; // align "12 o'clock" to vertical
 
     // shadow length (shortest near noon)
     let shadowLength = p.map(
-      Math.abs(fakeHour - 12),
+      Math.abs((fakeHour % 12) - 6),
       0,
-      12,
-      100,
-      240
+      6,
+      160,
+      260
     );
 
     // ground
@@ -60,7 +51,8 @@ registerSketch('sk3', function (p) {
     p.stroke(120);
     p.strokeWeight(4);
     let shadowX = poleX + p.cos(angle) * shadowLength;
-    p.line(poleX, poleY, shadowX, poleY);
+    let shadowY = poleY + p.sin(angle) * shadowLength;
+    p.line(poleX, poleY, shadowX, shadowY);
 
     // time label (reference only)
     p.noStroke();
