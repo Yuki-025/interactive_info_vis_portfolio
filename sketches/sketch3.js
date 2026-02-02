@@ -63,8 +63,8 @@ registerSketch('sk3', function (p) {
       p.nf(p.hour(), 2) + ":" +
       p.nf(p.minute(), 2) + ":" +
       p.nf(p.second(), 2),
-      p.width / 2,
-      poleY + 40
+      poleX,
+      poleY - poleHeight - 40
     );
   };
 
