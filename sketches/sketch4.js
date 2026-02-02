@@ -59,13 +59,14 @@ registerSketch('sk4', function (p) {
     // burned counter
     p.noStroke();
     p.fill(150);
-    p.textSize(14);
+    p.textSize(20);
     p.textAlign(p.RIGHT, p.CENTER);
     p.text(
-      "Candles burned: " + burnedCount,
+     "Candles burned: " + burnedCount + "\n(1 candle = 5 minutes)",
       p.width - 20,
       p.height - 30
     );
+
   };
 
   p.windowResized = function () {
